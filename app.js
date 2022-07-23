@@ -3,8 +3,14 @@ const { parse } = require('rss-to-json');
 // Promise
 
 parse('http://www.isleofwightweather.com/rss.xml').then(rss => {
-    return (JSON.stringify(rss, null, 3));
+    const data = JSON.stringify(rss, (k,v) => v === undefined ? null : v, 3);
+    return (data);
 })
 .then(data => {
-    console.log(data.description);
+    return JSON.parse(data);
+})
+.then(conditions => {
+    const current = conditions.items[0];
+    const details = current.description.split(' | ');
+    console.log(details);
 });
