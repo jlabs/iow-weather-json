@@ -1,10 +1,10 @@
 const { parse } = require('rss-to-json');
 
-// async await
-(async () => {
+// Promise
 
-    var rss = await parse('http://www.isleofwightweather.com/rss.xml');
-
-    console.log(JSON.stringify(rss, null, 3));
-
-})();
+parse('http://www.isleofwightweather.com/rss.xml').then(rss => {
+    return (JSON.stringify(rss, null, 3));
+})
+.then(data => {
+    console.log(data.description);
+});
