@@ -2,7 +2,7 @@ const { parse } = require('rss-to-json');
 
 // Promise
 
-parse('http://www.isleofwightweather.com/rss.xml').then(rss => {
+const weatherData = parse('http://www.isleofwightweather.com/rss.xml').then(rss => {
     const data = JSON.stringify(rss, (k,v) => v === undefined ? null : v, 3);
     return (data);
 })
@@ -14,3 +14,5 @@ parse('http://www.isleofwightweather.com/rss.xml').then(rss => {
     const details = current.description.split(' | ');
     console.log(details);
 });
+
+module.exports = weatherData;

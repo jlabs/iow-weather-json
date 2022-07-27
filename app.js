@@ -1,6 +1,7 @@
 //app.js
 const http = require("http");
 const Todo = require("./controller");
+const IOWWeather = require("./controller");
 const { getReqData } = require("./utils");
 
 const PORT = process.env.PORT || 5000;
@@ -14,6 +15,12 @@ const server = http.createServer(async (req, res) => {
         res.writeHead(200, { "Content-Type": "application/json" });
         // send the data
         res.end(JSON.stringify(todos));
+    }
+
+    else if (req.url === '/api/weather' && req.method === 'GET') {
+        const weather = await new IOWWeather().getWeatherConditions();
+        res.writeHead(200, { "Content-Type": 'application/json' });
+        res.end(JSON.stringify(weather));
     }
 
     // /api/todos/:id : GET
@@ -83,10 +90,6 @@ const server = http.createServer(async (req, res) => {
         res.writeHead(200, { "Content-Type": "application/json" });
         //send the todo
         res.end(JSON.stringify(todo));
-    }
-
-    else if (req.url === '/api/weather' && req.method === 'GET') {
-
     }
 
     // No route present

@@ -1,6 +1,7 @@
 // controller.js
 // Logic behind the functionalities
 const data = require("./data");
+const weather = require("./controllers/weather")
 
 class Controller {
     // getting all todos
@@ -10,7 +11,7 @@ class Controller {
     }
 
     async getWeatherConditions() {
-        
+        return new Promise((resolve, _) => resolve(weather));
     }
 
     // getting a single todo
