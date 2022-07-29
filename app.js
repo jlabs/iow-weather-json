@@ -21,14 +21,7 @@ const server = http.createServer(async (req, res) => {
         const weather = await new IOWWeather().getWeatherConditions();
         res.writeHead(200, { "Content-Type": 'application/json' });
         //res.end(JSON.stringify(weather));
-        res.end(JSON.stringify([
-            {
-                id: 1,
-                title: "Coding in Javascript",
-                description: "Working with functions in JavaScript",
-                completed: false,
-            },
-        ]));
+        res.end(JSON.stringify(weather));
     }
 
     // /api/todos/:id : GET

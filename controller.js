@@ -1,7 +1,7 @@
 // controller.js
 // Logic behind the functionalities
 const data = require("./data");
-const weather = require("./controllers/weather")
+const { parse } = require('rss-to-json');
 
 class Controller {
     // getting all todos
@@ -11,7 +11,20 @@ class Controller {
     }
 
     async getWeatherConditions() {
-        return new Promise((resolve, _) => resolve(weather));
+        return new Promise((resolve, reject) => {
+            const weatherData = parse('http://www.isleofwightweather.com/rss.xml').then(rss => {
+            const data = JSON.stringify(rss, (k,v) => v === undefined ? null : v, 3);
+                return (data);
+            })
+            .then(data => {
+                return JSON.parse(data);
+            })
+            .then(conditions => {
+                const current = conditions.items[0];
+                const details = current.description.split(' | ');
+                resolve(details);
+            });
+        });
     }
 
     // getting a single todo

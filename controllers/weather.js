@@ -15,4 +15,4 @@ const weatherData = parse('http://www.isleofwightweather.com/rss.xml').then(rss 
     console.log(details);
 });
 
-module.exports = weatherData;
+module.exports = { weatherData };
