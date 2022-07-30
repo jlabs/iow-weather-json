@@ -24,10 +24,11 @@ class Controller {
             .then(conditions => {
                 const current = conditions.items[0];
                 const details = current.description.split(' | ');
-                const getWeatherConditions = details.reduce((accumulator, value) => {
+                const allDetails = details.filter(d => d.includes(' : '));
+                const getWeatherConditions = allDetails.reduce((accumulator, value) => {
                     return {...accumulator, [pascalCase(value.split(' : ')[0])]: value.split(' : ')[1]}
                 })
-                resolve(details);
+                resolve(getWeatherConditions);
             });
         });
     }
