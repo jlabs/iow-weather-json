@@ -27,7 +27,7 @@ class Controller {
                 const getWeatherConditions = details.reduce((accumulator, value) => {
                     return {...accumulator, [pascalCase(value.split(' : ')[0])]: value.split(' : ')[1]}
                 })
-                resolve(getWeatherConditions);
+                resolve(details);
             });
         });
     }
