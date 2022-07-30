@@ -23,12 +23,13 @@ class Controller {
             })
             .then(conditions => {
                 const current = conditions.items[0];
-                const details = current.description.split(' | ');
-                const allDetails = details.filter(d => d.includes(' : '));
+                const details = current.description.split(' \| ');
+                const allDetails = details.filter(d => d.includes(' \: '));
+                // FIXME: filtered key/value pairs still include the conditions string which gets split on each character
                 const getWeatherConditions = allDetails.reduce((accumulator, value) => {
-                    return {...accumulator, [pascalCase(value.split(' : ')[0])]: value.split(' : ')[1]}
+                    return {...accumulator, [pascalCase(value.split(' \: ')[0])]: value.split(' : ')[1]}
                 })
-                resolve(allDetails);
+                resolve(getWeatherConditions);
             });
         });
     }
