@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "isomorphic-unfetch": "^3.1.0",
+    "pascal-case": "^3.1.2",
     "rss-to-json": "^2.1.0",
     "save": "^2.5.0",
     "xml2js": "^0.4.23"

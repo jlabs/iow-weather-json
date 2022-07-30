@@ -2,6 +2,8 @@
 // Logic behind the functionalities
 const data = require("./data");
 const { parse } = require('rss-to-json');
+const { pascalCase } = require("pascal-case");
+
 
 class Controller {
     // getting all todos
@@ -22,7 +24,10 @@ class Controller {
             .then(conditions => {
                 const current = conditions.items[0];
                 const details = current.description.split(' | ');
-                resolve(details);
+                const getWeatherConditions = details.reduce((accumulator, value) => {
+                    return {...accumulator, [pascalCase(value.split(' : ')[0])]: value.split(' : ')[1]}
+                })
+                resolve(getWeatherConditions);
             });
         });
     }
