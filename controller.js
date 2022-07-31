@@ -27,7 +27,7 @@ class Controller {
                 const allDetails = details.filter(d => d.includes(' \: '));
                 // FIXME: filtered key/value pairs still include the conditions string which gets split on each character
                 const getWeatherConditions = allDetails.reduce((accumulator, value) => {
-                    return {...accumulator, [pascalCase(value.split(' \: ')[0])]: value.split(' : ')[1]}
+                    return {...accumulator, [pascalCase(value.split(':')[0].trim)]: value.split(':')[1].trim}
                 })
                 resolve(getWeatherConditions);
             });
