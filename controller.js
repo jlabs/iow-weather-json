@@ -4,6 +4,10 @@ const data = require("./data");
 const { parse } = require('rss-to-json');
 const { pascalCase } = require("pascal-case");
 
+function toPascalCase(str){
+    return (' ' + str).toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => {
+        return chr.toUpperCase()});
+}
 
 class Controller {
     // getting all todos
@@ -23,13 +27,13 @@ class Controller {
             })
             .then(conditions => {
                 const current = conditions.items[0];
-                const details = current.description.split(' \| ');
-                const allDetails = details.filter(d => d.includes(' \: '));
-                // FIXME: filtered key/value pairs still include the conditions string which gets split on each character
-                const getWeatherConditions = allDetails.reduce((accumulator, value) => {
-                    return {...accumulator, [pascalCase(value.split(':')[0].trim)]: value.split(':')[1].trim}
-                })
-                resolve(getWeatherConditions);
+                const details = current.description.split('|').map(detail => detail.trim());
+                const conditionsAt = details.shift();
+                let weatherData = {};
+                const getWeatherConditions = details.forEach((line, i) => {
+                    weatherData[toPascalCase(line.split(':')[0].trim())] = line.split(':')[1].trim()
+                });
+                resolve(weatherData);
             });
         });
     }
