@@ -38,6 +38,18 @@ class Controller {
         });
     }
 
+    async getWeatherCondition(condition) {
+        //const weather = await this.getWeatherCondition();
+        switch (condition) {
+            case "currentTemperature":
+                return console.log(condition);
+                break;
+        
+            default:
+                break;
+        }
+    }
+
     // getting a single todo
     async getTodo(id) {
         return new Promise((resolve, reject) => {
