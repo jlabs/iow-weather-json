@@ -2,12 +2,7 @@
 // Logic behind the functionalities
 const data = require("./data");
 const { parse } = require('rss-to-json');
-const { pascalCase } = require("pascal-case");
-
-function toPascalCase(str){
-    return (' ' + str).toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => {
-        return chr.toUpperCase()});
-}
+const { toPascalCase } = require('./utils/toPascalCase');
 
 class Controller {
     // getting all todos
@@ -15,11 +10,12 @@ class Controller {
         // return all todos
         return new Promise((resolve, _) => resolve(data));
     }
-
+    
     async getWeatherConditions() {
         return new Promise((resolve, reject) => {
-            const weatherData = parse('http://www.isleofwightweather.com/rss.xml').then(rss => {
-            const data = JSON.stringify(rss, (k,v) => v === undefined ? null : v, 3);
+            const weather = parse('http://www.isleofwightweather.com/rss.xml')
+            .then(rss => {
+                const data = JSON.stringify(rss, (k,v) => v === undefined ? null : v, 3);
                 return (data);
             })
             .then(data => {
@@ -33,16 +29,19 @@ class Controller {
                 const getWeatherConditions = details.forEach((line, i) => {
                     weatherData[toPascalCase(line.split(':')[0].trim())] = line.split(':')[1].trim()
                 });
-                resolve(weatherData);
+                return weatherData;
+            })
+            .catch(er => {
+                reject(er);
             });
+            resolve(weather);
         });
     }
 
     async getWeatherCondition(condition) {
-        //const weather = await this.getWeatherCondition();
         switch (condition) {
             case "currentTemperature":
-                return console.log(condition);
+                return condition;
                 break;
         
             default:
