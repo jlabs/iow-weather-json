@@ -2,7 +2,7 @@
 // Logic behind the functionalities
 const data = require("./data");
 const { parse } = require('rss-to-json');
-const { toPascalCase } = require('./utils/toPascalCase');
+const { toPascalCase } = require('./utils');
 
 class Controller {
     // getting all todos
@@ -39,14 +39,32 @@ class Controller {
     }
 
     async getWeatherCondition(condition) {
-        switch (condition) {
-            case "currentTemperature":
-                return condition;
-                break;
-        
-            default:
-                break;
-        }
+        return new Promise((resolve, reject) => {
+            const weather = parse('http://www.isleofwightweather.com/rss.xml')
+                .then(rss => {
+                    const data = JSON.stringify(rss, (k,v) => v === undefined ? null : v, 3);
+                    return (data);
+                })
+                .then(data => {
+                    return JSON.parse(data);
+                })
+                .then(conditions => {
+                    const current = conditions.items[0];
+                    const details = current.description.split('|').map(detail => detail.trim());
+                    const conditionsAt = details.shift();
+                    let weatherData = {};
+                    const getWeatherConditions = details.forEach((line, i) => {
+                        weatherData[line.split(':')[0].toLowerCase().replace(' ', '').trim()] = line.split(':')[1].trim()
+                    });
+                    //console.log(weatherData);
+                    console.log(weatherData[condition])
+                    return { 'result' : weatherData[condition]};
+                })
+                .catch(er => {
+                    reject(er);
+                });
+            resolve(weather);
+        });
     }
 
     // getting a single todo

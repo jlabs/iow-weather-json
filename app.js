@@ -26,19 +26,13 @@ const server = http.createServer(async (req, res) => {
 
     // /api/todos/:id : GET
     else if (req.url.match(/\/api\/weather\/([a-z]+)/) && req.method === "GET") {
-        try {
-            // get id from url
-            const condition = req.url.split("/")[3];
+        const allowed = ['currently', 'currenttemperature'];
+        const condition = req.url.split("/")[3];
+        if (allowed.includes(condition)) {
             const weather = await new IOWWeather().getWeatherCondition(condition);
-            // set the status code and content-type
-            res.writeHead(200, { "Content-Type": "application/json" });
-            // send the data
+            res.writeHead(200, { "Content-Type": 'application/json' });
+            //res.end(JSON.stringify(weather));
             res.end(JSON.stringify(weather));
-        } catch (error) {
-            // set the status code and content-type
-            res.writeHead(404, { "Content-Type": "application/json" });
-            // send the error
-            res.end(JSON.stringify({ message: error }));
         }
     }
     // /api/todos/:id : GET
